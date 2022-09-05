@@ -1,27 +1,20 @@
 pub fn annotate(minefield: &[&str]) -> Vec<String> {
     // unimplemented!("\nAnnotate each square of the given minefield with the number of mines that surround said square (blank if there are no surrounding mines):\n{:#?}\n", minefield);
-    let grid = minefield
+    let mut grid = minefield
         .iter()
         .map(|line| line.as_bytes().to_owned())
         .collect::<Vec<_>>();
 
-    // let m = grid.len();
-    // let n = grid[0].len();
-    let mut ans = grid.clone();
-
     for i in 0..grid.len() {
         for j in 0..grid[0].len() {
-            if grid[i][j] == b'*' {
+            if grid[i][j] != b' ' {
                 continue;
             }
             let cnt = get_mine_cnt(i as i8, j as i8, &grid);
-            ans[i][j] = if cnt > 0 {
-                cnt.to_string().as_bytes()[0]
-            } else {
-                b' '
-            }; //u8::try_from(cnt).unwrap();
-            // println!("cnt {cnt}");
-            // println!("ans[i][j] {i} {j} {:?}", cnt.to_string()); //ans[i][j]);
+            if cnt>0 {
+                grid[i][j] = cnt as u8 + b'0';
+            }
+
         }
     }
 
@@ -29,9 +22,9 @@ pub fn annotate(minefield: &[&str]) -> Vec<String> {
     // println!("minefield {:?}", minefield);
     // println!("ans {:?}", ans);
 
-    return ans
-        .iter()
-        .map(|byte| String::from_utf8(byte.to_vec()).unwrap())
+    return grid
+        .into_iter()
+        .map(|byte| String::from_utf8(byte).unwrap())
         .collect();
 
     fn get_mine_cnt(i: i8, j: i8, grid: &Vec<Vec<u8>>) -> usize {
