@@ -1,29 +1,26 @@
 pub fn verse(n: u32) -> String {
     if n > 0 {
-        format!("{n} bottle{} of beer on the wall, {n} bottle{} of beer.\nTake {} down and pass it around, {} bottle{} of beer on the wall.\n",
-        get_has_s(n),
-        get_has_s(n),
-        get_it_or_one(n),
-        if n-1>0 {(n-1).to_string()}else{"no more".to_owned()}
-        ,get_has_s(n-1))
+        format!("{n} bottle{0} of beer on the wall, {n} bottle{0} of beer.\nTake {1} down and pass it around, {2} bottle{3} of beer on the wall.\n",
+        get_has_s(n), // 0
+        get_it_or_one(n), // 1
+        if n-1>0 {(n-1).to_string()}else{"no more".to_owned()} // 2
+        ,get_has_s(n-1)) // 3
     } else {
         "No more bottles of beer on the wall, no more bottles of beer.\nGo to the store and buy some more, 99 bottles of beer on the wall.\n".to_owned()
     }
 }
 
 fn get_it_or_one(n: u32) -> String {
-    if n <= 1 {
-        "it".to_owned()
-    } else {
-        "one".to_owned()
+    match n {
+        1 => "it".to_owned(),
+        _ => "one".to_owned(),
     }
 }
 
 fn get_has_s(n: u32) -> String {
-    if n == 1 {
-        "".to_owned()
-    } else {
-        "s".to_owned()
+    match n {
+        1 => "".to_owned(),
+        _ => "s".to_owned(),
     }
 }
 
