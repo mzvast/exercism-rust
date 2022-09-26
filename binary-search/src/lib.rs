@@ -12,15 +12,18 @@ pub fn find(array: &[i32], key: i32) -> Option<usize> {
     let mut head = 0 as i8;
     let mut tail: i8 = array.len() as i8 - 1;
 
-    while head <= tail {
+    while tail - head > 3 {
         let mid = (head + tail) / 2;
-        // println!("mid:{mid}");
-        if array[mid as usize] == key {
-            return Some(mid as usize);
-        } else if array[mid as usize] < key {
+        if array[mid as usize] < key {
             head = mid + 1;
         } else {
-            tail = mid - 1;
+            tail = mid;
+        }
+    }
+
+    for i in head..=tail {
+        if array[i as usize] == key {
+            return Some(i as usize);
         }
     }
 
