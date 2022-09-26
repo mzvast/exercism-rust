@@ -14,7 +14,7 @@ pub fn find(array: &[i32], key: i32) -> Option<usize> {
 
     while head <= tail {
         let mid = (head + tail) / 2;
-        println!("mid:{mid}");
+        // println!("mid:{mid}");
         if array[mid as usize] == key {
             return Some(mid as usize);
         } else if array[mid as usize] < key {
