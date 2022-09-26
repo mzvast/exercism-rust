@@ -5,24 +5,22 @@ pub fn find(array: &[i32], key: i32) -> Option<usize> {
     //     array
     // );
 
-    if array.len() == 0 {
+    if array.is_empty() {
         return None;
     }
 
-    let (mut head, mut tail) = (0, array.len() - 1);
+    let mut head = 0 as i8;
+    let mut tail: i8 = array.len() as i8 - 1;
 
-    while tail - head > 3 {
+    while head <= tail {
         let mid = (head + tail) / 2;
-        if array[mid] < key {
+        println!("mid:{mid}");
+        if array[mid as usize] == key {
+            return Some(mid as usize);
+        } else if array[mid as usize] < key {
             head = mid + 1;
         } else {
-            tail = mid;
-        }
-    }
-
-    for i in head..=tail {
-        if array[i] == key {
-            return Some(i);
+            tail = mid - 1;
         }
     }
 
