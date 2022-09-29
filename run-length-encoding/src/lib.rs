@@ -15,11 +15,9 @@ pub fn encode(source: &str) -> String {
             // new word or ended
             if pre != '!' {
                 // 非第一个
-                if cnt > 1 {
-                    ans.push_str(cnt.to_string().as_str());
-                    ans.push(pre);
-                } else {
-                    ans.push(pre);
+                match cnt {
+                    1 => ans.push(pre),
+                    _ => ans.push_str(&format!("{cnt}{pre}")),
                 }
             }
 
@@ -36,19 +34,13 @@ pub fn decode(source: &str) -> String {
     let mut ans = String::new();
 
     let mut cnt_total: u32 = 0; // 当前字母出现的次数
-    for cur in source.chars().chain("$".chars()) {
-        if cur.is_ascii_alphabetic() || cur.is_ascii_whitespace() || cur == '$' {
-            if cur != '$' {
-                ans.push_str(
-                    cur.to_string()
-                        .repeat(if cnt_total == 0 {
-                            1 // 默认一次
-                        } else {
-                            cnt_total as usize
-                        })
-                        .as_str(),
-                );
+    for cur in source.chars() {
+        if cur.is_ascii_alphabetic() || cur.is_ascii_whitespace() {
+            match cnt_total {
+                0 => ans.push(cur),
+                _ => ans.push_str(cur.to_string().repeat(cnt_total as usize).as_str()),
             }
+
             cnt_total = 0;
         }
 
