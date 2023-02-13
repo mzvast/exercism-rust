@@ -2,23 +2,19 @@ pub fn abbreviate(phrase: &str) -> String {
     // unimplemented!("Given the phrase '{phrase}', return its acronym");
 
     let ans = phrase
-        // .split_ascii_whitespace()
         .split(|c: char| !c.is_alphabetic() && c != '\'') // 断句
         .filter(|s| !s.is_empty())
-        .map(|word: &str| {
-            if word.chars().all(|c| c.is_uppercase()) {
-                // 都是大写字母，取第一个
-                return word[0..1].to_uppercase();
-            }
-            // 否则首字母+后面的大写字母
-            word[0..1].to_uppercase()
-                + word[1..]
-                    .chars()
-                    .filter(|c| c.is_uppercase())
-                    .collect::<String>()
-                    .as_str()
+        // 拍平
+        .flat_map(|word: &str| {
+            // 取首字母
+            word.chars().take(1).chain(
+                word.chars()
+                    .skip_while(|c| c.is_ascii_uppercase()) // 从第一个小写开始
+                    .filter(|c| c.is_ascii_uppercase()), // 取所有大写字母
+            )
         })
-        .collect::<String>();
+        .collect::<String>()
+        .to_uppercase();
 
     ans
 }
